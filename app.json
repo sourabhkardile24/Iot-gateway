@@ -37,6 +37,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7d35aa2c-074d-4247-9230-4d4fd9e5e7d8"
+      }
+    },
+    "owner": "noddyind"
   }
 }
