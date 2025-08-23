@@ -1,1 +1,4 @@
-export { useColorScheme } from 'react-native';
+// Modified to always return light theme
+export function useColorScheme() {
+  return 'light';
+}

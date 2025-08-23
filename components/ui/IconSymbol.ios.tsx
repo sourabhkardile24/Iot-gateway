@@ -1,5 +1,9 @@
 import { SymbolView, SymbolViewProps, SymbolWeight } from 'expo-symbols';
 import { StyleProp, ViewStyle } from 'react-native';
+import { IconSymbolName } from './IconSymbol';
+
+// Cast string to the specific SF Symbol enum type to avoid TypeScript errors
+const asSymbol = (name: string) => name as SymbolViewProps['name'];
 
 export function IconSymbol({
   name,
@@ -8,7 +12,7 @@ export function IconSymbol({
   style,
   weight = 'regular',
 }: {
-  name: SymbolViewProps['name'];
+  name: IconSymbolName;
   size?: number;
   color: string;
   style?: StyleProp<ViewStyle>;
@@ -19,7 +23,7 @@ export function IconSymbol({
       weight={weight}
       tintColor={color}
       resizeMode="scaleAspectFit"
-      name={name}
+      name={asSymbol(name)}
       style={[
         {
           width: size,
