@@ -79,9 +79,8 @@ export function StatusCard({ title, value, type, icon, style }: StatusCardProps)
   
   // Create gradient colors based on the accent color - vibrant and smooth gradient
   const gradientColors = [
-    accentColor+ 'CC', // Full accent color for stronger start
-    accentColor + 'E6', // 80% opacity 
-    accentColor + 'ff'  // 60% opacity for fade effect
+    accentColor+ 'F2', // Full accent color for stronger start
+    accentColor + 'FF'  // 60% opacity for fade effect
   ];
   
   // Function to potentially truncate text for smaller screens
