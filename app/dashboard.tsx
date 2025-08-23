@@ -3,7 +3,7 @@ import { AnalogInputCard, DigitalInputCard } from '@/components/iot/InputDisplay
 import { ParameterCard } from '@/components/iot/ParameterCard';
 import { StatusCard } from '@/components/iot/StatusCard';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { useMockIoTData } from '@/hooks/useMockIoTData';
+import { useIoTData } from '@/hooks/useIoTData';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
@@ -15,10 +15,10 @@ export default function IoTDashboardScreen() {
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   
-  const { sensors, digitalInputs, analogInputs, actuators, historicalData, toggleActuator } = useMockIoTData();
+  const { sensors, digitalInputs, analogInputs, actuators, historicalData, toggleActuator } = useIoTData();
   
   const connectionStatus = 'connected'; // Mock connection status
-  const totalAlarms = sensors.filter(s => s.value < s.min || s.value > s.max).length;
+  const totalAlarms = sensors.filter((s) => s.value < s.min || s.value > s.max).length;
   
   const renderTabButton = (id: string, label: string) => (
     <Pressable
@@ -63,7 +63,7 @@ export default function IoTDashboardScreen() {
         />
         <StatusCard 
           title="Active Sensors" 
-          value={`${sensors.filter(s => s.status === 'online').length}/${sensors.length}`} 
+          value={`${sensors.filter((s) => s.status === 'online').length}/${sensors.length}`} 
           type="sensors" 
           icon="activity"
           style={{ flex: 1 }} 
@@ -77,7 +77,7 @@ export default function IoTDashboardScreen() {
         />
         <StatusCard 
           title="Actuators Online" 
-          value={`${actuators.filter(a => a.status === 'online').length}/${actuators.length}`} 
+          value={`${actuators.filter((a) => a.status === 'online').length}/${actuators.length}`} 
           type="actuators" 
           icon="activity"
           style={{ flex: 1 }} 
@@ -87,7 +87,7 @@ export default function IoTDashboardScreen() {
       {/* Recent Parameters */}
       <Text style={[styles.sectionTitle, { color: textColor }]}>Sensor Parameters</Text>
       <View style={styles.cardGrid}>
-        {sensors.map(sensor => (
+        {sensors.map((sensor) => (
           <View key={sensor.id} style={styles.cardGridItem}>
             <ParameterCard sensor={sensor} />
           </View>
@@ -97,7 +97,7 @@ export default function IoTDashboardScreen() {
       {/* Controls */}
       <Text style={[styles.sectionTitle, { color: textColor }]}>Quick Controls</Text>
       <View style={styles.cardGrid}>
-        {actuators.slice(0, 4).map(actuator => (
+        {actuators.slice(0, 4).map((actuator) => (
           <View key={actuator.id} style={styles.cardGridItem}>
             <ActuatorControl actuator={actuator} onToggle={toggleActuator} />
           </View>
@@ -119,7 +119,7 @@ export default function IoTDashboardScreen() {
       
       <Text style={[styles.sectionTitle, { color: textColor }]}>Digital Inputs</Text>
       <View style={styles.cardGrid}>
-        {digitalInputs.map(input => (
+        {digitalInputs.map((input) => (
           <View key={input.id} style={styles.cardGridItem}>
             <DigitalInputCard input={input} />
           </View>
@@ -128,7 +128,7 @@ export default function IoTDashboardScreen() {
       
       <Text style={[styles.sectionTitle, { color: textColor }]}>Analog Inputs</Text>
       <View style={styles.cardGrid}>
-        {analogInputs.map(input => (
+        {analogInputs.map((input) => (
           <View key={input.id} style={styles.cardGridItem}>
             <AnalogInputCard input={input} />
           </View>
@@ -141,7 +141,7 @@ export default function IoTDashboardScreen() {
     <View style={styles.contentContainer}>
       <Text style={[styles.sectionTitle, { color: textColor }]}>Actuator Controls</Text>
       <View style={styles.cardGrid}>
-        {actuators.map(actuator => (
+        {actuators.map((actuator) => (
           <View key={actuator.id} style={styles.cardGridItem}>
             <ActuatorControl actuator={actuator} onToggle={toggleActuator} />
           </View>

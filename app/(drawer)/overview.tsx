@@ -3,23 +3,23 @@ import { ParameterCard } from '@/components/iot/ParameterCard';
 import { StatusCard } from '@/components/iot/StatusCard';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { useMockIoTData } from '@/hooks/useMockIoTData';
+import { useIoTData } from '@/hooks/useIoTData';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useState } from 'react';
 import {
-    Animated,
-    Pressable,
-    RefreshControl,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    useWindowDimensions,
-    View
+  Animated,
+  Pressable,
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+  View
 } from 'react-native';
 
 export default function OverviewScreen() {
@@ -36,7 +36,7 @@ export default function OverviewScreen() {
   const fabAnim = useState(new Animated.Value(0))[0];
   const headerAnim = useState(new Animated.Value(0))[0];
   
-  const { sensors, actuators, toggleActuator, systemStatus } = useMockIoTData();
+  const { sensors, actuators, toggleActuator, systemStatus } = useIoTData();
   
   // Calculate responsive column count
   const getColumnCount = useCallback(() => {
@@ -259,7 +259,7 @@ export default function OverviewScreen() {
             <>
               <Text style={[styles.sectionTitle, { color: textColor }]}>Sensor Parameters</Text>
               <View style={[styles.sensorParametersGrid, { gap: 12 }]}>
-                {sensors.map(sensor => (
+                {sensors.map((sensor) => (
                   <Animated.View 
                     key={sensor.id}
                     style={[
@@ -276,7 +276,7 @@ export default function OverviewScreen() {
             <>
               <Text style={[styles.sectionTitle, { color: textColor }]}>Quick Controls</Text>
               <View style={[styles.controlGrid, { gap: 10 }]}>
-                {actuators.map(actuator => (
+                {actuators.map((actuator) => (
                   <Animated.View 
                     key={actuator.id} 
                     style={[
