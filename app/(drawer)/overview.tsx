@@ -1,4 +1,5 @@
 import { ActuatorControl } from '@/components/iot/ActuatorControl';
+import { DigitalInputCard } from '@/components/iot/InputDisplays';
 import { ParameterCard } from '@/components/iot/ParameterCard';
 import { StatusCard } from '@/components/iot/StatusCard';
 import { IconSymbol } from '@/components/ui/IconSymbol';
@@ -36,7 +37,7 @@ export default function OverviewScreen() {
   const fabAnim = useState(new Animated.Value(0))[0];
   const headerAnim = useState(new Animated.Value(0))[0];
   
-  const { sensors, actuators, toggleActuator, systemStatus } = useIoTData();
+  const { sensors, actuators, toggleActuator, systemStatus, digitalInputs } = useIoTData();
   
   // Calculate responsive column count
   const getColumnCount = useCallback(() => {
@@ -263,7 +264,7 @@ export default function OverviewScreen() {
                   <Animated.View 
                     key={sensor.id}
                     style={[
-                      { width: '100%' },
+                      { width: `${100/Math.min(columnCount, 4) - 2}%` },
                       { opacity: 1, transform: [{ translateY: 0 }] } // Initial animation state
                     ]}
                   >
@@ -294,6 +295,14 @@ export default function OverviewScreen() {
               </View>
             </>
           )}
+          <Text style={[styles.sectionTitle, { color: textColor }]}>Digital Inputs</Text>
+                    <View style={styles.cardGrid}>
+                      {digitalInputs.map(input => (
+                        <View key={input.id} style={styles.cardGridItem}>
+                          <DigitalInputCard input={input} />
+                        </View>
+                      ))}
+                    </View>
         </View>
       </ScrollView>
       
@@ -448,7 +457,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   sensorParametersGrid: {
-    flexDirection: 'column',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 16,
+    justifyContent: 'space-between',
   },
   // FAB Styles
   fabContainer: {

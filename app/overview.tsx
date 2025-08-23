@@ -263,7 +263,6 @@ export default function OverviewScreen() {
                   <Animated.View 
                     key={sensor.id}
                     style={[
-                      { width: '100%' },
                       { opacity: 1, transform: [{ translateY: 0 }] } // Initial animation state
                     ]}
                   >
@@ -447,7 +446,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   sensorParametersGrid: {
-    flexDirection: 'column',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 16,
+    justifyContent: 'space-between',
   },
   // FAB Styles
   fabContainer: {
