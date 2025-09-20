@@ -232,97 +232,97 @@ export const DUMMY_PAYLOAD = JSON.stringify({
       id: 'temp_001',
       name: 'Ambient Temperature',
       type: 'temperature',
-      value: 23.5,
+      value: 0,
       unit: '°C',
       status: 'online',
-      lastUpdated: new Date().toISOString(),
-      min: 18,
-      max: 35
+      lastUpdated: null,
+      min: 0,
+      max: 0
     },
     {
       id: 'hum_001',
       name: 'Humidity Sensor',
       type: 'humidity',
-      value: 52.4,
+      value: 0,
       unit: '%',
       status: 'online',
-      lastUpdated: new Date().toISOString(),
-      min: 30,
-      max: 80
+      lastUpdated: null,
+      min: 0,
+      max: 0
     },
     {
       id: 'press_001',
       name: 'System Pressure',
       type: 'pressure',
-      value: 1.3,
+      value: 0,
       unit: 'bar',
       status: 'online',
-      lastUpdated: new Date().toISOString(),
-      min: 0.8,
-      max: 2.0
+      lastUpdated: null,
+      min: 0,
+      max: 0
     },
     {
       id: 'flow_001',
       name: 'Water Flow Rate',
       type: 'flow',
-      value: 18.2,
+      value: 0,
       unit: 'L/min',
       status: 'online',
-      lastUpdated: new Date().toISOString(),
-      min: 5,
-      max: 30
+      lastUpdated: null,
+      min: 0,
+      max: 0
     },
     {
       id: 'volt_001',
       name: 'Supply Voltage',
       type: 'voltage',
-      value: 228.5,
+      value: 0,
       unit: 'V',
       status: 'online',
-      lastUpdated: new Date().toISOString(),
-      min: 200,
-      max: 250
+      lastUpdated: null,
+      min: 0,
+      max: 0
     }
   ],
   digitalInputs: [
     {
       id: 'di_001',
       name: 'Door Sensor',
-      value: true,
-      status: 'active',
-      lastChanged: new Date().toISOString()
+      value: false,
+      status: 'inactive',
+      lastChanged: null
     },
     {
       id: 'di_002',
       name: 'Motion Detector',
       value: false,
       status: 'inactive',
-      lastChanged: new Date().toISOString()
+      lastChanged: null
     },
     {
       id: 'di_003',
       name: 'Emergency Stop',
       value: false,
       status: 'inactive',
-      lastChanged: new Date().toISOString()
+      lastChanged: null
     }
   ],
   analogInputs: [
     {
       id: 'ai_001',
       name: 'Analog Sensor 1',
-      value: 12.5,
+      value: 0,
       unit: 'mA',
-      range: { min: 4, max: 20 },
-      lastUpdated: new Date().toISOString()
+      range: { min: 0, max: 0 },
+      lastUpdated: null
     },
     {
       id: 'ai_002',
       name: 'Position Feedback',
-      value: 67.8,
+      value: 0,
       unit: '%',
-      range: { min: 0, max: 100 },
-      lastUpdated: new Date().toISOString()
+      range: { min: 0, max: 0 },
+      lastUpdated: null
     }
   ],
   actuators: [
@@ -330,17 +330,17 @@ export const DUMMY_PAYLOAD = JSON.stringify({
       id: 'act_001',
       name: 'Main Pump',
       type: 'pump',
-      state: true,
+      state: false,
       status: 'online',
-      lastChanged: new Date().toISOString()
+      lastChanged: null
     },
     {
       id: 'act_002',
       name: 'Cooling Fan',
       type: 'motor',
-      state: true,
+      state: false,
       status: 'online',
-      lastChanged: new Date().toISOString()
+      lastChanged: null
     },
     {
       id: 'act_003',
@@ -348,7 +348,7 @@ export const DUMMY_PAYLOAD = JSON.stringify({
       type: 'valve',
       state: false,
       status: 'online',
-      lastChanged: new Date().toISOString()
+      lastChanged: null
     },
     {
       id: 'act_004',
@@ -356,16 +356,16 @@ export const DUMMY_PAYLOAD = JSON.stringify({
       type: 'switch',
       state: false,
       status: 'online',
-      lastChanged: new Date().toISOString()
+      lastChanged: null
     }
   ],
   systemStatus: {
-    gatewayConnected: true,
-    sensorsConnected: 5,
-    totalSensors: 5,
+    gatewayConnected: false,
+    sensorsConnected: 0,
+    totalSensors: 0,
     activeAlarms: 0,
-    actuatorsOnline: 4,
-    totalActuators: 4,
-    lastUpdated: new Date().toISOString()
+    actuatorsOnline: 0,
+    totalActuators: 0,
+    lastUpdated: null
   }
 });

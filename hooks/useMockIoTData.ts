@@ -54,62 +54,62 @@ export interface SystemStatus {
   lastUpdated: Date;
 }
 
-// Mock data generators
+// Mock data generators with static values
 const generateSensorData = (): SensorData[] => [
   {
     id: 'temp_001',
     name: 'Ambient Temperature',
     type: 'temperature',
-    value: 22.5 + Math.random() * 5,
+    value: 0,
     unit: '°C',
     status: 'online',
-    lastUpdated: new Date(),
-    min: 18,
-    max: 35
+    lastUpdated: null as any,
+    min: 0,
+    max: 0
   },
   {
     id: 'hum_001',
     name: 'Humidity Sensor',
     type: 'humidity',
-    value: 45 + Math.random() * 20,
+    value: 0,
     unit: '%',
     status: 'online',
-    lastUpdated: new Date(),
-    min: 30,
-    max: 80
+    lastUpdated: null as any,
+    min: 0,
+    max: 0
   },
   {
     id: 'press_001',
     name: 'System Pressure',
     type: 'pressure',
-    value: 1.2 + Math.random() * 0.5,
+    value: 0,
     unit: 'bar',
     status: 'online',
-    lastUpdated: new Date(),
-    min: 0.8,
-    max: 2.0
+    lastUpdated: null as any,
+    min: 0,
+    max: 0
   },
   {
     id: 'flow_001',
     name: 'Water Flow Rate',
     type: 'flow',
-    value: 15 + Math.random() * 10,
+    value: 0,
     unit: 'L/min',
     status: 'online',
-    lastUpdated: new Date(),
-    min: 5,
-    max: 30
+    lastUpdated: null as any,
+    min: 0,
+    max: 0
   },
   {
     id: 'volt_001',
     name: 'Supply Voltage',
     type: 'voltage',
-    value: 220 + Math.random() * 20,
+    value: 0,
     unit: 'V',
     status: 'online',
-    lastUpdated: new Date(),
-    min: 200,
-    max: 250
+    lastUpdated: null as any,
+    min: 0,
+    max: 0
   }
 ];
 
@@ -117,23 +117,23 @@ const generateDigitalInputs = (): DigitalInput[] => [
   {
     id: 'di_001',
     name: 'Door Sensor',
-    value: Math.random() > 0.7,
-    status: Math.random() > 0.7 ? 'active' : 'inactive',
-    lastChanged: new Date(Date.now() - Math.random() * 3600000)
+    value: false,
+    status: 'inactive',
+    lastChanged: null as any
   },
   {
     id: 'di_002',
     name: 'Motion Detector',
-    value: Math.random() > 0.8,
-    status: Math.random() > 0.8 ? 'active' : 'inactive',
-    lastChanged: new Date(Date.now() - Math.random() * 3600000)
+    value: false,
+    status: 'inactive',
+    lastChanged: null as any
   },
   {
     id: 'di_003',
     name: 'Emergency Stop',
-    value: Math.random() > 0.95,
-    status: Math.random() > 0.95 ? 'active' : 'inactive',
-    lastChanged: new Date(Date.now() - Math.random() * 3600000)
+    value: false,
+    status: 'inactive',
+    lastChanged: null as any
   }
 ];
 
@@ -141,18 +141,18 @@ const generateAnalogInputs = (): AnalogInput[] => [
   {
     id: 'ai_001',
     name: 'Analog Sensor 1',
-    value: 4 + Math.random() * 16,
+    value: 0,
     unit: 'mA',
-    range: { min: 4, max: 20 },
-    lastUpdated: new Date()
+    range: { min: 0, max: 0 },
+    lastUpdated: null as any
   },
   {
     id: 'ai_002',
     name: 'Position Feedback',
-    value: Math.random() * 100,
+    value: 0,
     unit: '%',
-    range: { min: 0, max: 100 },
-    lastUpdated: new Date()
+    range: { min: 0, max: 0 },
+    lastUpdated: null as any
   }
 ];
 
@@ -163,15 +163,15 @@ const generateActuatorControls = (): ActuatorControl[] => [
     type: 'pump',
     state: false,
     status: 'online',
-    lastChanged: new Date(Date.now() - Math.random() * 3600000)
+    lastChanged: null as any
   },
   {
     id: 'act_002',
     name: 'Cooling Fan',
     type: 'motor',
-    state: true,
+    state: false,
     status: 'online',
-    lastChanged: new Date(Date.now() - Math.random() * 3600000)
+    lastChanged: null as any
   },
   {
     id: 'act_003',
@@ -179,7 +179,7 @@ const generateActuatorControls = (): ActuatorControl[] => [
     type: 'valve',
     state: false,
     status: 'online',
-    lastChanged: new Date(Date.now() - Math.random() * 3600000)
+    lastChanged: null as any
   },
   {
     id: 'act_004',
@@ -187,7 +187,7 @@ const generateActuatorControls = (): ActuatorControl[] => [
     type: 'switch',
     state: false,
     status: 'online',
-    lastChanged: new Date(Date.now() - Math.random() * 3600000)
+    lastChanged: null as any
   }
 ];
 
@@ -198,109 +198,33 @@ export function useMockIoTData() {
   const [actuators, setActuators] = useState<ActuatorControl[]>(generateActuatorControls());
   const [historicalData, setHistoricalData] = useState<HistoricalDataPoint[]>([]);
   const [systemStatus, setSystemStatus] = useState<SystemStatus>({
-    gatewayConnected: true,
-    sensorsConnected: 5,
-    totalSensors: 5,
+    gatewayConnected: false,
+    sensorsConnected: 0,
+    totalSensors: 0,
     activeAlarms: 0,
-    actuatorsOnline: 4,
-    totalActuators: 4,
-    lastUpdated: new Date()
+    actuatorsOnline: 0,
+    totalActuators: 0,
+    lastUpdated: null as any
   });
 
-  // Generate historical data
+  // Generate empty historical data
   useEffect(() => {
-    const generateHistoricalData = () => {
+    const generateEmptyHistoricalData = () => {
       const data: HistoricalDataPoint[] = [];
-      const now = new Date();
-      
-      sensors.forEach(sensor => {
-        for (let i = 0; i < 100; i++) {
-          const timestamp = new Date(now.getTime() - i * 60000); // Every minute for last 100 minutes
-          let baseValue = sensor.value;
-          
-          // Add some realistic variation based on sensor type
-          if (sensor.type === 'temperature') {
-            baseValue = 22 + Math.sin(i * 0.1) * 3 + Math.random() * 2;
-          } else if (sensor.type === 'humidity') {
-            baseValue = 50 + Math.sin(i * 0.05) * 15 + Math.random() * 5;
-          } else if (sensor.type === 'pressure') {
-            baseValue = 1.4 + Math.sin(i * 0.08) * 0.3 + Math.random() * 0.1;
-          } else if (sensor.type === 'flow') {
-            baseValue = 18 + Math.sin(i * 0.12) * 8 + Math.random() * 3;
-          } else if (sensor.type === 'voltage') {
-            baseValue = 230 + Math.sin(i * 0.03) * 10 + Math.random() * 5;
-          }
-          
-          data.push({
-            timestamp,
-            sensorId: sensor.id,
-            value: baseValue
-          });
-        }
-      });
-      
-      setHistoricalData(data.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()));
+      // We're not generating any historical data points, just returning an empty array
+      setHistoricalData(data);
     };
     
-    generateHistoricalData();
-  }, [sensors]);
-
-  // Update sensor data every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Update sensors
-      setSensors(prev => {
-        const updatedSensors = prev.map(sensor => ({
-          ...sensor,
-          value: sensor.value + (Math.random() - 0.5) * 2,
-          lastUpdated: new Date()
-        }));
-        
-        // Count alarms for system status
-        const alarmsCount = updatedSensors.filter(s => 
-          s.value < s.min || s.value > s.max
-        ).length;
-        
-        // Update system status based on sensor data
-        setSystemStatus(prevStatus => ({
-          ...prevStatus,
-          gatewayConnected: Math.random() > 0.05, // 5% chance of disconnect to simulate real world
-          sensorsConnected: updatedSensors.filter(s => s.status === 'online').length,
-          totalSensors: updatedSensors.length,
-          activeAlarms: alarmsCount,
-          lastUpdated: new Date()
-        }));
-        
-        return updatedSensors;
-      });
-      
-      // Update analog inputs
-      setAnalogInputs(prev => prev.map(input => ({
-        ...input,
-        value: Math.max(input.range.min, Math.min(input.range.max, 
-          input.value + (Math.random() - 0.5) * 2)),
-        lastUpdated: new Date()
-      })));
-      
-      // Update actuators status in system status
-      setActuators(prev => {
-        setSystemStatus(prevStatus => ({
-          ...prevStatus,
-          actuatorsOnline: prev.filter(a => a.status === 'online').length,
-          totalActuators: prev.length
-        }));
-        return prev;
-      });
-      
-    }, 5000);
-
-    return () => clearInterval(interval);
+    generateEmptyHistoricalData();
   }, []);
+
+  // No auto-updating logic to keep data static
+  // Removed the interval that updated values every 5 seconds
 
   const toggleActuator = useCallback((id: string) => {
     setActuators(prev => prev.map(actuator => 
       actuator.id === id 
-        ? { ...actuator, state: !actuator.state, lastChanged: new Date() }
+        ? { ...actuator, state: !actuator.state, lastChanged: null as any }
         : actuator
     ));
   }, []);

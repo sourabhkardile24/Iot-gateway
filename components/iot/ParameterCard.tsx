@@ -144,7 +144,7 @@ export function ParameterCard({ sensor }: ParameterCardProps) {
         </View>
         
         <Text style={styles.updatedTime}>
-          Updated: {sensor.lastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+          Updated: {sensor.lastUpdated != null ? sensor.lastUpdated.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'N/A'}
         </Text>
       </LinearGradient>
     </View>
