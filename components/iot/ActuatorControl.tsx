@@ -119,7 +119,7 @@ export function ActuatorControl({ actuator, onToggle }: ActuatorControlProps) {
             {actuator.state ? 'ON' : 'OFF'}
           </Text>
           <Text style={[styles.lastChangedText, { color: textColor + '99' }]}>
-            Last changed: {actuator.lastChanged.toLocaleTimeString()}
+            Last changed: {actuator.lastChanged != null ? actuator.lastChanged.toLocaleTimeString() : 'N/A'}
           </Text>
         </View>
       </View>
