@@ -3,18 +3,18 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 export default function LoginScreen() {
@@ -29,20 +29,10 @@ export default function LoginScreen() {
   const [loginError, setLoginError] = useState('');
   const [touched, setTouched] = useState({ email: false, password: false });
   
-  const { login, isAuthenticated } = useAuth();
+  const { login } = useAuth();
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const tintColor = useThemeColor({}, 'tint');
-
-  // Check if user is already authenticated and redirect
-  useEffect(() => {
-    if (isAuthenticated) {
-      console.log('LoginScreen: User is authenticated, redirecting to drawer');
-      setTimeout(() => {
-        router.replace('/(drawer)');
-      }, 100); // Small delay to ensure state is fully updated
-    }
-  }, [isAuthenticated]);
 
   // Validation functions
   const validateEmail = (email: string): string => {
@@ -124,12 +114,8 @@ export default function LoginScreen() {
     try {
       console.log('Attempting login with:', { email: email.trim(), password: '***' });
       await login({ email: email.trim(), password });
-      console.log('Login successful, should redirect now');
-      
-      // Force redirect after successful login with a small delay
-      setTimeout(() => {
-        router.replace('/(drawer)');
-      }, 500);
+      console.log('Login successful, AuthGuard will handle navigation');
+      // AuthGuard will automatically redirect after successful login
     } catch (error: any) {
       console.error('Login error:', error);
       

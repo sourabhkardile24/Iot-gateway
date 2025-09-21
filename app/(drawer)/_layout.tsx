@@ -1,4 +1,5 @@
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
+import { router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -21,7 +22,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const tintColor = useThemeColor({}, 'tint');
-  const { user } = useAuth();
+  const { user, logout, isLoading } = useAuth();
 
   const screens: ScreenItem[] = [
     { name: 'overview', path: '/overview', label: 'Overview', icon: 'house.fill' },
@@ -31,6 +32,15 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
     { name: 'history', path: '/history', label: 'History', icon: 'clock.fill' },
     { name: 'settings', path: '/settings', label: 'Settings', icon: 'gearshape.fill' },
   ];
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.replace('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   return (
     <DrawerContentScrollView 
@@ -86,6 +96,30 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             </Pressable>
           );
         })}
+      </View>
+      
+      {/* Logout Button */}
+      <View style={[styles.logoutContainer, { borderTopColor: textColor + '20' }]}>
+        <Pressable
+          onPress={handleLogout}
+          disabled={isLoading}
+          style={({pressed}) => [
+            styles.logoutButton,
+            { 
+              backgroundColor: '#ef4444',
+              opacity: pressed ? 0.8 : (isLoading ? 0.6 : 1)
+            }
+          ]}
+        >
+          <IconSymbol 
+            name="power" 
+            size={20} 
+            color="white" 
+          />
+          <Text style={styles.logoutText}>
+            {isLoading ? 'Logging out...' : 'Logout'}
+          </Text>
+        </Pressable>
       </View>
     </DrawerContentScrollView>
   );
@@ -148,5 +182,25 @@ const styles = StyleSheet.create({
   drawerLabel: {
     marginLeft: 16,
     fontSize: 16,
+  },
+  logoutContainer: {
+    marginTop: 'auto',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderTopWidth: 1,
+  },
+  logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
+  logoutText: {
+    marginLeft: 12,
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'white',
   },
 });

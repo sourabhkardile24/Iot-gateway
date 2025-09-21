@@ -14,6 +14,7 @@ interface AuthContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (credentials: LoginRequest) => Promise<void>;
+  logout: () => Promise<void>;
   refreshAuth: () => Promise<void>;
 }
 
@@ -138,6 +139,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  const logout = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      console.log('AuthContext: Starting logout process');
+      
+      // Optionally call logout API (we'll implement this in authService)
+      try {
+        await authService.logout(token);
+      } catch (error) {
+        console.warn('AuthContext: Backend logout failed, continuing with local logout', error);
+      }
+      
+      // Clear local auth data
+      await clearAuthData();
+      console.log('AuthContext: Logout completed, auth data cleared');
+    } catch (error) {
+      console.error('AuthContext: Logout error', error);
+      // Even if logout fails, clear local data
+      await clearAuthData();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const clearAuthData = async (): Promise<void> => {
     await Promise.all([
       AsyncStorage.removeItem(STORAGE_KEYS.TOKEN),
@@ -156,6 +181,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     isLoading,
     isAuthenticated,
     login,
+    logout,
     refreshAuth,
   };
 

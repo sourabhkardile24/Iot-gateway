@@ -146,6 +146,34 @@ class AuthService {
     }
   }
 
+  async logout(token: string | null): Promise<void> {
+    try {
+      if (!token) {
+        console.log('AuthService: No token provided for logout, skipping API call');
+        return;
+      }
+
+      console.log('AuthService: Making logout request to backend');
+      const response = await fetch(`${this.baseUrl}/api/Auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.warn('AuthService: Backend logout failed with status', response.status);
+      } else {
+        console.log('AuthService: Backend logout successful');
+      }
+    } catch (error) {
+      console.warn('AuthService: Logout API call failed', error);
+      // Don't throw error - local logout should still proceed
+    }
+  }
+
   isTokenExpired(expiration: string): boolean {
     const expirationDate = new Date(expiration);
     const now = new Date();
