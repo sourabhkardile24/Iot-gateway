@@ -4,6 +4,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { useAuth } from '@/contexts/AuthContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useThemeColor } from '@/hooks/useThemeColor';
 
@@ -20,6 +21,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const tintColor = useThemeColor({}, 'tint');
+  const { user } = useAuth();
 
   const screens: ScreenItem[] = [
     { name: 'overview', path: '/overview', label: 'Overview', icon: 'house.fill' },
@@ -38,6 +40,11 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
     >
       <View style={[styles.drawerHeader, { borderBottomColor: textColor + '20' }]}>
         <Text style={[styles.drawerTitle, { color: textColor }]}>IoT Gateway</Text>
+        {user && (
+          <Text style={[styles.userText, { color: textColor + '80' }]}>
+            Welcome, {user.username}
+          </Text>
+        )}
       </View>
       
       <View style={styles.drawerContent}>
@@ -121,7 +128,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
   },
+  userText: {
+    fontSize: 14,
+    marginTop: 4,
+  },
   drawerContent: {
+    flex: 1,
     paddingVertical: 8,
   },
   drawerItem: {
