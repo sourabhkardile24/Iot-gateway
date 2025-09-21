@@ -56,7 +56,7 @@ export function DigitalInputCard({ input }: { input: DigitalInput }) {
         </View>
         
         <Text style={[styles.lastUpdatedText, { color: textColor + '99' }]}>
-          Last changed: {input.lastChanged != null ? input.lastChanged.toLocaleTimeString() : 'N/A'}
+          Last changed: {input.lastChanged != null ? input.lastChanged.toLocaleString() : 'N/A'}
         </Text>
       </View>
     </View>
@@ -113,7 +113,7 @@ export function AnalogInputCard({ input }: { input: AnalogInput }) {
         </View>
         
         <Text style={[styles.lastUpdatedText, { color: textColor + '99' }]}>
-          Last updated: {input.lastUpdated != null ? input.lastUpdated.toLocaleTimeString() : 'N/A'}
+          Last updated: {input.lastUpdated != null ? input.lastUpdated.toLocaleString() : 'N/A'}
         </Text>
       </View>
     </View>

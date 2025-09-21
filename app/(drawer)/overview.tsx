@@ -5,6 +5,7 @@ import { StatusCard } from '@/components/iot/StatusCard';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useIoTData } from '@/hooks/useIoTData';
+import { useDeviceData } from '@/hooks/useDeviceData';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -37,7 +38,13 @@ export default function OverviewScreen() {
   const fabAnim = useState(new Animated.Value(0))[0];
   const headerAnim = useState(new Animated.Value(0))[0];
   
-  const { sensors, actuators, toggleActuator, systemStatus, digitalInputs } = useIoTData();
+  const { sensors, actuators, toggleActuator, systemStatus } = useIoTData();
+  const { deviceData, isLoading: deviceLoading, error: deviceError, refreshData } = useDeviceData();
+  
+  // Use device data if available, fall back to mock data
+  const digitalInputs = deviceData?.digitalInputs || [];
+  const gatewayStatus = deviceData?.systemStatus || systemStatus;
+  const deviceTimestamp = deviceData?.timestamp;
   
   // Calculate responsive column count
   const getColumnCount = useCallback(() => {
@@ -53,10 +60,11 @@ export default function OverviewScreen() {
   const statusColumnCount = width < 500 ? 2 : Math.min(4, columnCount);
   
   // Get statuses from system status
-  const connectionStatus = systemStatus.gatewayConnected ? 'Connected' : 'Disconnected';
-  const sensorStatus = `${systemStatus.sensorsConnected}/${systemStatus.totalSensors}`;
-  const actuatorStatus = `${systemStatus.actuatorsOnline}/${systemStatus.totalActuators}`;
-  const alarmCount = systemStatus.activeAlarms;
+  const connectionStatus = gatewayStatus.gatewayConnected ? 'Connected' : 'Disconnected';
+  const powerStatus: string = 'powerStatus' in gatewayStatus ? (gatewayStatus as any).powerStatus : 'OFF';
+  const sensorStatus = `${gatewayStatus.sensorsConnected}/${gatewayStatus.totalSensors}`;
+  const actuatorStatus = `${gatewayStatus.actuatorsOnline}/${gatewayStatus.totalActuators}`;
+  const alarmCount = gatewayStatus.activeAlarms;
   
   // Animation for FAB
   const toggleFab = () => {
@@ -93,11 +101,14 @@ export default function OverviewScreen() {
       })
     ]).start();
     
+    // Refresh device data
+    refreshData();
+    
     // Simulate refresh delay
     setTimeout(() => {
       setRefreshing(false);
     }, 1500);
-  }, []);
+  }, [refreshData]);
   
   // Header animation values
   const headerScale = headerAnim.interpolate({
@@ -195,9 +206,9 @@ export default function OverviewScreen() {
                 </View>
                 <View style={styles.statusCardContainer}>
                   <StatusCard 
-                    title="Active Sensors" 
-                    value={sensorStatus}
-                    type="sensors" 
+                    title="Power Status" 
+                    value={powerStatus} 
+                    type="connection" 
                     icon="activity"
                   />
                 </View>
@@ -213,9 +224,9 @@ export default function OverviewScreen() {
                 </View>
                 <View style={styles.statusCardContainer}>
                   <StatusCard 
-                    title="Actuators Online" 
-                    value={actuatorStatus} 
-                    type="actuators" 
+                    title="Digital Inputs" 
+                    value={`${digitalInputs.filter(i => i.value).length}/${digitalInputs.length}`} 
+                    type="sensors" 
                     icon="activity"
                   />
                 </View>
@@ -232,9 +243,9 @@ export default function OverviewScreen() {
                 style={{ flex: 1 }}
               />
               <StatusCard 
-                title="Active Sensors" 
-                value={sensorStatus}
-                type="sensors" 
+                title="Power Status" 
+                value={powerStatus} 
+                type="connection" 
                 icon="activity"
                 style={{ flex: 1 }}
               />
@@ -246,9 +257,9 @@ export default function OverviewScreen() {
                 style={{ flex: 1 }}
               />
               <StatusCard 
-                title="Actuators Online" 
-                value={actuatorStatus}
-                type="actuators" 
+                title="Digital Inputs" 
+                value={`${digitalInputs.filter(i => i.value).length}/${digitalInputs.length}`}
+                type="sensors" 
                 icon="activity"
                 style={{ flex: 1 }}
               />
@@ -296,13 +307,23 @@ export default function OverviewScreen() {
             </>
           )}
           <Text style={[styles.sectionTitle, { color: textColor }]}>Digital Inputs</Text>
-                    <View style={styles.cardGrid}>
-                      {digitalInputs.map(input => (
-                        <View key={input.id} style={styles.cardGridItem}>
-                          <DigitalInputCard input={input} />
-                        </View>
-                      ))}
-                    </View>
+          {deviceTimestamp && (
+            <Text style={[styles.timestampText, { color: textColor + '80' }]}>
+              Last Updated: {deviceTimestamp}
+            </Text>
+          )}
+          {deviceError && (
+            <Text style={[styles.errorText, { color: '#ef4444' }]}>
+              Error: {deviceError}
+            </Text>
+          )}
+          <View style={styles.cardGrid}>
+            {digitalInputs.map(input => (
+              <View key={input.id} style={styles.cardGridItem}>
+                <DigitalInputCard input={input} />
+              </View>
+            ))}
+          </View>
         </View>
       </ScrollView>
       
@@ -514,5 +535,15 @@ const styles = StyleSheet.create({
   fabActionText: {
     color: 'white',
     fontWeight: '500',
-  }
+  },
+  timestampText: {
+    fontSize: 12,
+    marginBottom: 8,
+    fontStyle: 'italic',
+  },
+  errorText: {
+    fontSize: 12,
+    marginBottom: 8,
+    fontWeight: '500',
+  },
 });
