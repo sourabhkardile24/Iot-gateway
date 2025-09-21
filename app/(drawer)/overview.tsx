@@ -4,8 +4,8 @@ import { ParameterCard } from '@/components/iot/ParameterCard';
 import { StatusCard } from '@/components/iot/StatusCard';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { useIoTData } from '@/hooks/useIoTData';
 import { useDeviceData } from '@/hooks/useDeviceData';
+import { useIoTData } from '@/hooks/useIoTData';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -208,7 +208,7 @@ export default function OverviewScreen() {
                   <StatusCard 
                     title="Power Status" 
                     value={powerStatus} 
-                    type="connection" 
+                    type="power" 
                     icon="activity"
                   />
                 </View>
@@ -245,7 +245,7 @@ export default function OverviewScreen() {
               <StatusCard 
                 title="Power Status" 
                 value={powerStatus} 
-                type="connection" 
+                type="power" 
                 icon="activity"
                 style={{ flex: 1 }}
               />
@@ -265,6 +265,20 @@ export default function OverviewScreen() {
               />
             </View>
           )}
+
+          <Text style={[styles.sectionTitle, { color: textColor }]}>Digital Inputs</Text>
+          {deviceError && (
+            <Text style={[styles.errorText, { color: '#ef4444' }]}>
+              Error: {deviceError}
+            </Text>
+          )}
+          <View style={styles.cardGrid}>
+            {digitalInputs.map(input => (
+              <View key={input.id} style={styles.cardGridItem}>
+                <DigitalInputCard input={input} deviceTimestamp={deviceTimestamp}/>
+              </View>
+            ))}
+          </View>
 
           {/* Conditional rendering based on selected section */}
           {selectedSection === 'sensors' ? (
@@ -306,24 +320,6 @@ export default function OverviewScreen() {
               </View>
             </>
           )}
-          <Text style={[styles.sectionTitle, { color: textColor }]}>Digital Inputs</Text>
-          {deviceTimestamp && (
-            <Text style={[styles.timestampText, { color: textColor + '80' }]}>
-              Last Updated: {deviceTimestamp}
-            </Text>
-          )}
-          {deviceError && (
-            <Text style={[styles.errorText, { color: '#ef4444' }]}>
-              Error: {deviceError}
-            </Text>
-          )}
-          <View style={styles.cardGrid}>
-            {digitalInputs.map(input => (
-              <View key={input.id} style={styles.cardGridItem}>
-                <DigitalInputCard input={input} />
-              </View>
-            ))}
-          </View>
         </View>
       </ScrollView>
       

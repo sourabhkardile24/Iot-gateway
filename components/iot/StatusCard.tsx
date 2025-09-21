@@ -22,6 +22,10 @@ const StatusIcon = ({ iconName, size = 24, color = '#fff' }: StatusIconProps) =>
       return <Ionicons name="pulse-outline" size={size} color={color} />;
     case 'alert':
       return <Ionicons name="warning-outline" size={size} color={color} />;
+    case 'powerOn':
+      return <Ionicons name="power" size={size} color={color} />;
+    case 'powerOff':
+      return <Ionicons name="power-outline" size={size} color={color} />;
     default:
       return <Ionicons name="stats-chart-outline" size={size} color={color} />;
   }
@@ -30,7 +34,7 @@ const StatusIcon = ({ iconName, size = 24, color = '#fff' }: StatusIconProps) =>
 interface StatusCardProps {
   title: string;
   value: string | number;
-  type: 'connection' | 'sensors' | 'alarms' | 'actuators';
+  type: 'connection' | 'sensors' | 'alarms' | 'actuators' | 'power';
   icon: string;
   style?: ViewStyle;
 }
@@ -55,6 +59,20 @@ export function StatusCard({ title, value, type, icon, style }: StatusCardProps)
       } else {
         iconColor = '#ffffffff'; // Green for connected status
         accentColor = '#10b981';
+      }
+      break;
+    case 'power':
+      // Check if power is OFF
+      if (value === 'OFF') {
+        iconColor = '#9ca3af'; // Gray icon for OFF
+        accentColor = '#374151'; // Dark gray for OFF status
+        textColor = '#d1d5db'; // Light gray text
+        subtitleColor = '#9ca3af'; // Gray subtitle
+        iconName = 'powerOff'; // Use power-off icon
+      } else {
+        iconColor = '#ffffffff'; // White icon for ON
+        accentColor = '#22c55e'; // Bright green for ON status
+        iconName = 'powerOn'; // Use power-on icon
       }
       break;
     case 'sensors':

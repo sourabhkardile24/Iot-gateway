@@ -4,10 +4,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export function DigitalInputCard({ input }: { input: DigitalInput }) {
+export function DigitalInputCard({ input, deviceTimestamp }: { input: DigitalInput, deviceTimestamp: string | undefined }) {
   const colorScheme = useColorScheme() ?? 'light';
   
   // Colors based on input value and theme
+
+  const statusText = input.value != null ? 'Active' : 'Inactive';
   const bgColor = input.value 
     ? colorScheme === 'light' ? '#ecfdf5' : '#064e3b' // green when true
     : colorScheme === 'light' ? '#fef2f2' : '#7f1d1d'; // red when false
@@ -19,12 +21,12 @@ export function DigitalInputCard({ input }: { input: DigitalInput }) {
   const borderColor = input.value
     ? colorScheme === 'light' ? '#a7f3d0' : '#059669'
     : colorScheme === 'light' ? '#fecaca' : '#b91c1c';
-    
-  const statusBgColor = input.status === 'active'
+
+  const statusBgColor = statusText === 'Active'
     ? colorScheme === 'light' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.2)'
     : colorScheme === 'light' ? 'rgba(107, 114, 128, 0.1)' : 'rgba(107, 114, 128, 0.2)';
-    
-  const statusTextColor = input.status === 'active'
+
+  const statusTextColor = statusText === 'Active'
     ? colorScheme === 'light' ? '#10b981' : '#34d399'
     : colorScheme === 'light' ? '#6b7280' : '#9ca3af';
   
@@ -34,7 +36,7 @@ export function DigitalInputCard({ input }: { input: DigitalInput }) {
         <Text style={[styles.title, { color: textColor }]}>{input.name}</Text>
         <View style={[styles.badge, { backgroundColor: statusBgColor }]}>
           <Text style={[styles.badgeText, { color: statusTextColor }]}>
-            {input.status}
+            {statusText}
           </Text>
         </View>
       </View>
@@ -48,7 +50,7 @@ export function DigitalInputCard({ input }: { input: DigitalInput }) {
           <View style={[
             styles.indicator, 
             { 
-              backgroundColor: input.value 
+              backgroundColor: input.value != null
                 ? colorScheme === 'light' ? '#10b981' : '#34d399' 
                 : colorScheme === 'light' ? '#ef4444' : '#f87171'
             }
@@ -56,7 +58,7 @@ export function DigitalInputCard({ input }: { input: DigitalInput }) {
         </View>
         
         <Text style={[styles.lastUpdatedText, { color: textColor + '99' }]}>
-          Last changed: {input.lastChanged != null ? input.lastChanged.toLocaleString() : 'N/A'}
+          Last changed: {deviceTimestamp != null ? deviceTimestamp : 'N/A'}
         </Text>
       </View>
     </View>

@@ -1,5 +1,5 @@
 import { useAuth } from '@/contexts/AuthContext';
-import { deviceDataService, DeviceDataResponse } from '@/services/deviceDataService';
+import { DeviceDataResponse, deviceDataService } from '@/services/deviceDataService';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface DeviceStatus {
