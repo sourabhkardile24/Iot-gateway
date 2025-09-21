@@ -229,6 +229,14 @@ export function useMockIoTData() {
     ));
   }, []);
 
+  const toggleDigitalInput = useCallback((id: string) => {
+    setDigitalInputs(prev => prev.map(input => 
+      input.id === id 
+        ? { ...input, value: !input.value, status: !input.value ? 'active' : 'inactive', lastChanged: null as any }
+        : input
+    ));
+  }, []);
+
   return {
     sensors,
     digitalInputs,
@@ -236,6 +244,7 @@ export function useMockIoTData() {
     actuators,
     historicalData,
     systemStatus,
-    toggleActuator
+    toggleActuator,
+    toggleDigitalInput
   };
 }

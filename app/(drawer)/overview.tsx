@@ -38,11 +38,11 @@ export default function OverviewScreen() {
   const fabAnim = useState(new Animated.Value(0))[0];
   const headerAnim = useState(new Animated.Value(0))[0];
   
-  const { sensors, actuators, toggleActuator, systemStatus } = useIoTData();
+  const { sensors, actuators, toggleActuator, systemStatus, digitalInputs: iotDigitalInputs } = useIoTData();
   const { deviceData, isLoading: deviceLoading, error: deviceError, refreshData } = useDeviceData();
   
   // Use device data if available, fall back to mock data
-  const digitalInputs = deviceData?.digitalInputs || [];
+  const digitalInputs = deviceData?.digitalInputs || iotDigitalInputs;
   const gatewayStatus = deviceData?.systemStatus || systemStatus;
   const deviceTimestamp = deviceData?.timestamp;
   

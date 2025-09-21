@@ -1,8 +1,9 @@
+import { useAlert } from '@/contexts/AlertContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { AnalogInput, DigitalInput } from '@/hooks/useMockIoTData';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 type DigitalInputIconProps = {
@@ -33,18 +34,41 @@ const DigitalInputIcon = ({ type, size = 16, color = '#fff' }: DigitalInputIconP
 
 export function DigitalInputCard({ input, deviceTimestamp }: { input: DigitalInput, deviceTimestamp: string | undefined }) {
   const colorScheme = useColorScheme() ?? 'light';
+  const { addAlert } = useAlert();
+  const previousValue = useRef<boolean | undefined>(undefined);
+  
+  // Monitor door sensor for changes and trigger alerts
+  useEffect(() => {
+    // Check if this is a door sensor
+    const isDoorSensor = input.name.toLowerCase().includes('door') || input.id.toLowerCase().includes('door');
+    
+    if (isDoorSensor && previousValue.current !== undefined) {
+      // Trigger alert if door sensor went from LOW (false) to HIGH (true)
+      if (!previousValue.current && input.value) {
+        addAlert(
+          'Door Sensor Alert!',
+          `${input.name} has been triggered. Please check the door immediately.`,
+          'warning'
+        );
+      }
+    }
+    
+    // Update the previous value for next comparison
+    previousValue.current = input.value;
+  }, [input.value, input.name, input.id, addAlert]);
   
   // Determine status and colors based on input value
   const isActive = input.value;
   const statusText = input.value != null ? 'Active' : 'Inactive';
+  const isDoorSensor = input.name.toLowerCase().includes('door') || input.id.toLowerCase().includes('door');
   
-  // Icon background color based on status
-  const iconBgColor = isActive ? '#22c55e' : '#ef1010ff'; // Green for active, gray for inactive
+  // Icon background color based on status - red for any HIGH status
+  const iconBgColor = isActive ? '#ef4444' : '#22c55e'; // Red for any active input, green for inactive
   
-  // Gradient colors based on status
+  // Gradient colors based on status - red for any HIGH status
   const getGradientColors = () => {
     if (isActive) {
-      return ['#ffffff', '#dcfce7', '#bbf7d0'] as any; // Green gradient for active
+      return ['#fef2f2', '#fee2e2', '#fecaca'] as any; // Red gradient for any active input
     } else {
       return ['#ffffff', '#f9fafb', '#f3f4f6'] as any; // Gray gradient for inactive
     }
@@ -52,8 +76,9 @@ export function DigitalInputCard({ input, deviceTimestamp }: { input: DigitalInp
   
   const gradientColors = getGradientColors();
   
-  // Status indicator style
-  const statusIndicatorStyle = statusText == 'Active' ? styles.activeStatus : styles.inactiveStatus;
+  // Status indicator style - red for any HIGH status
+  const statusIndicatorStyle = statusText == 'Active' ? 
+     styles.activeStatus : styles.inactiveStatus;
   
   return (
     <View style={styles.card}>
@@ -203,6 +228,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: '#22c55e', // Green for active
   },
+  doorActiveStatus: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#ef4444', // Red for active door sensors
+  },
   inactiveStatus: {
     width: 8,
     height: 8,
@@ -230,7 +261,10 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   activeValueText: {
-    color: '#22c55e', // Green for active
+    color: '#ef4444', // Red for any active input
+  },
+  doorActiveValueText: {
+    color: '#ef4444', // Red for active door sensors
   },
   inactiveValueText: {
     color: '#6b7280', // Gray for inactive
@@ -259,7 +293,10 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   activeStatusBar: {
-    backgroundColor: '#22c55e', // Green for active
+    backgroundColor: '#ef4444', // Red for any active input
+  },
+  doorActiveStatusBar: {
+    backgroundColor: '#ef4444', // Red for active door sensors
   },
   inactiveStatusBar: {
     backgroundColor: '#6b7280', // Gray for inactive
