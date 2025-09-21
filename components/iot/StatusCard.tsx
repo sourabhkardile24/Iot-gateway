@@ -57,8 +57,8 @@ export function StatusCard({ title, value, type, icon, style }: StatusCardProps)
         accentColor = '#ef4444';
         iconName = 'wifiOff'; // Use offline icon
       } else {
-        iconColor = '#ffffffff'; // Green for connected status
-        accentColor = '#10b981';
+        iconColor = '#ffffffff'; // Blue for connected status - changed from green
+        accentColor = '#3b82f6'; // Blue instead of green
       }
       break;
     case 'power':
@@ -71,7 +71,7 @@ export function StatusCard({ title, value, type, icon, style }: StatusCardProps)
         iconName = 'powerOff'; // Use power-off icon
       } else {
         iconColor = '#ffffffff'; // White icon for ON
-        accentColor = '#22c55e'; // Bright green for ON status
+        accentColor = '#f59e0b'; // Amber/orange for power ON - changed from green
         iconName = 'powerOn'; // Use power-on icon
       }
       break;

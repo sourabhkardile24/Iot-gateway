@@ -274,9 +274,15 @@ export default function OverviewScreen() {
           )}
           <View style={styles.cardGrid}>
             {digitalInputs.map(input => (
-              <View key={input.id} style={styles.cardGridItem}>
+              <Animated.View 
+                key={input.id} 
+                style={[
+                  styles.cardGridItem,
+                  { width: `${100/Math.min(columnCount, 4) - 2}%` }
+                ]}
+              >
                 <DigitalInputCard input={input} deviceTimestamp={deviceTimestamp}/>
-              </View>
+              </Animated.View>
             ))}
           </View>
 
@@ -456,13 +462,12 @@ const styles = StyleSheet.create({
   cardGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 12,
     marginBottom: 16,
+    justifyContent: 'space-between',
   },
   cardGridItem: {
-    width: '48%', // Approximately half width with gap
-    flexGrow: 1,
-    flexShrink: 0,
+    marginBottom: 8,
   },
   controlGrid: {
     flexDirection: 'row',
